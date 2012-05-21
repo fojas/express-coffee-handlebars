@@ -1,31 +1,32 @@
 
-io = require('socket.io')
-express = require('express')
-routes = require('./routes')
-sockets = require('./sockets')
+io = require 'socket.io'
+express = require 'express'
+routes = require './routes'
+sockets = require './sockets'
 
 app = module.exports = express.createServer()
 
 
 app.configure () ->
-  app.set('views', __dirname + '/views')
-  app.set('view engine', 'hbs')
-  app.use(express.bodyParser())
-  app.use(express.methodOverride())
-  app.use(app.router)
-  app.use(express.static(__dirname + '/public'))
+  app.set 'views', "#{__dirname}/views"
+  app.set 'view engine', 'hbs'
+  app.use express.bodyParser()
+  app.use express.methodOverride()
+  app.use app.router
+  app.use express.static("#{__dirname}/public")
 
 app.configure 'development', () ->
-  app.use(express.errorHandler({ dumpExceptions: true, showStack: true }))
+  app.use express.errorHandler( dumpExceptions: true, showStack: true )
 
 
 app.configure 'production', () ->
-  app.use(express.errorHandler())
+  app.use express.errorHandler()
 
-app.get('/', routes.index)
+app.get '/', routes.index
 
 app.listen 3000, () ->
-  console.log("Express server listening on port %d in %s mode", app.address().port, app.settings.env)
+  console.log "Express server listening on port %d in %s mode", app.address().port, app.settings.env
 
 sio = io.listen(app)
-sio.of('/'+command).on('connection', sockets[command].connection) for command in sockets
+for own attr, command of sockets
+  sio.of('/'+attr).on 'connection', command.connection
