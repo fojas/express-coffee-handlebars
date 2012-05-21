@@ -1,8 +1,11 @@
 
 io = require 'socket.io'
 express = require 'express'
+handlebars = require 'hbs'
+
 routes = require './routes'
-sockets = require './sockets'
+sockets = require './lib/sockets'
+handlebar_helpers = require('./lib/handlebar_helpers')(handlebars)
 
 app = module.exports = express.createServer()
 

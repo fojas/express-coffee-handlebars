@@ -1,4 +1,4 @@
-sockets = require '../../sockets'
+sockets = require '../../lib/sockets'
 should = require('should')
 
 describe "Socket", ->
