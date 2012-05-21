@@ -17,6 +17,7 @@ app.configure () ->
   app.use express.methodOverride()
   app.use app.router
   app.use express.static("#{__dirname}/public")
+  app.use require('connect-assets') src : "#{__dirname}/public"
 
 app.configure 'development', () ->
   app.use express.errorHandler( dumpExceptions: true, showStack: true )
